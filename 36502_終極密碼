@@ -1,0 +1,127 @@
+#include <iostream>
+#include <ctime>
+#include <cstdlib>
+using namespace std;
+
+int main() {
+    int choise;    
+    do{
+        cout << "[Ultimate Password]\n1.Play\n2.Exit\n-1.you can try try see^_*\n";
+        cin >> choise;
+        int rand1;
+        int rand2;
+        int rand_com;
+        int frist;
+        bool guess_me = false;  //me guess or not?
+        bool guess_com = false;  //com guess or not?
+        bool turn = false;  //turn to who?
+        int num = 0;  //me enter
+        int begin = 0;  
+        int finish = 1000;
+        int i_rand = 0; //how much while
+        switch (choise){            //取亂數
+            case -1:
+                cout << "Welcom to Hardmode.You'll never win\nN!E!V!E!R!\n";
+            case 1:               
+                srand(time(0));
+                rand1=(rand() % 10) % 3;
+                rand2=rand();
+                switch(rand1){
+                    case 0:
+                        rand2 %= 100;
+                        break;
+                    case 1:
+                        rand2 %= 1000;
+                        break;
+                    case 2:
+                        rand2 %= 10;
+                        break;
+                }
+                cout << rand2;
+                cout << "Do you want to first?\n1.yes\n2.no\n";
+                cin >> frist;
+                if (frist == 1) {
+                    turn = false;
+                } else if (frist == 2) {
+                    turn = true;
+                } else {
+                    cout << "Non-compliant input. You will be disqualified from the selection\n";
+                }
+                begin = 0;
+
+                do { 
+                     
+                    //me
+                    if (turn == false) {  
+                        cout << begin << "~" << finish;  //出數字
+                        cout << " enter a number.\n"; 
+                        cout << "You: ";
+                        cin >> num;
+                        turn = true;
+                        if(rand2 == num) {  //see guess true or not
+                            guess_me = true;
+                            turn = false;
+                            cout << "BOWL!!! Yor Are Lower!\n " << "\n";
+                            break;
+                        } else if (finish > num && num > rand2) {
+                                finish = num;     
+                        } else if (rand2 > num && num > begin) {
+                            begin = num;
+                        } else {
+                                cout << "Please enter a number within therange. \n"; 
+                            
+                        } 
+                }
+                    
+                    
+                    //com
+                    if (turn == true) {   
+                        cout << begin << "~" << finish;  //出數字
+                        cout << " enter a number.\n"; 
+                        srand(time(0));
+                        rand_com = rand() % finish ;
+                        i_rand = 0;
+                        while ((finish > rand_com && rand_com > begin) == false) {
+                            rand_com = rand() % finish ;
+                            i_rand += 1;
+                            if (i_rand >= 50) {
+                                rand_com = begin + 1;
+                            }
+                        }
+                        if (choise == -1 && rand_com == rand2) {
+                            if (rand_com+1 == finish && rand_com-1 == begin) {
+                                cout << "**bug**@#$%^&*(\n";
+                                turn = false;
+                                break;
+                            } else if (rand_com+1 != finish) {
+                                rand_com += 1;
+                            } else {
+                                rand_com -= 1;
+                            }
+                        } else {
+                            cout << "computer: " << rand_com << "\n";
+                            turn = false;
+                            if(rand2 == rand_com) {  //see guess true or not
+                                guess_com = true;
+                                turn = true;
+                                cout << "BOWL!!! \nYor Are Winner!\n " << "\n";
+                                break;
+                            } else if (finish > rand_com && rand_com > rand2) {
+                                finish = rand_com;     
+                            } else if (rand2 > rand_com && rand_com > begin) {
+                                begin = rand_com;
+                            } 
+                        }
+                    }
+                    
+                } while (guess_me == false && guess_com == false);
+                break;
+            
+            case 2:
+                cout << "Bye~~~\n";
+                break;
+            default:
+                cout << "Fuck!\n";
+        }
+    } while (choise != 2);
+}
